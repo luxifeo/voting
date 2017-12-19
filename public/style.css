@@ -1,4 +1,6 @@
- body { padding-top: 50px; }
+ body { padding-top: 50px;
+  overflow:scroll;
+}
  .result-table {
  margin: 20px 0;
  width: 100%;

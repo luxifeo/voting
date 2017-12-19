@@ -6,13 +6,13 @@ var Poll = db.model('votingpoll', PollSchema);
 exports.index = function(req, res) {
   res.render('index', {title: 'Polls'});
 };
-// JSON API for list of polls
+////////////////////////////////
 exports.list = function(req, res) {
   Poll.find({}, 'question', function(error, polls) {
   res.json(polls);
   });
 };
-// JSON API for getting a single poll
+//////////////////////////////
 exports.poll = function(req, res) {
   console.log(req.params)
   var pollId = req.params.id;
@@ -32,7 +32,6 @@ exports.poll = function(req, res) {
           }
         }
       }
-      poll.userVoted = userVoted;
       poll.userChoice = userChoice;
       poll.totalVotes = totalVotes;
       res.json(poll);
@@ -41,10 +40,10 @@ exports.poll = function(req, res) {
     }
   });
 };
-// JSON API for creating a new poll
+//////////////////////////////////
 exports.create = function(req, res) {
   var reqBody = req.body
-  console.log(req.body)
+  //console.log(req.body)
   var choices = reqBody.choices.filter(function(v) { return v.text != ''; }),
   pollObj = {question: reqBody.question, choices: choices};
   var poll = new Poll(pollObj);
@@ -59,6 +58,7 @@ exports.create = function(req, res) {
 ///////////////////////////////////
 exports.vote = function(socket) {
   socket.on('send:vote', function(data) {
+    //console.log(data);
     var ip = socket.handshake.headers['x-forwarded-for'] ||
       socket.handshake.address.address;
     Poll.findById(data.poll_id, function(err, poll) {
@@ -89,7 +89,7 @@ exports.vote = function(socket) {
             }
           }
         }
-        console.log(doc)
+        //console.log(doc)
         socket.emit('myvote', theDoc);
         socket.broadcast.emit('vote', theDoc);
       }); 
